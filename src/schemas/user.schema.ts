@@ -8,8 +8,14 @@ export const user = z.object({
   admin: z.boolean().default(false),
   createdAt: z.date(),
   updateAt: z.date(),
-  deleteAt: z.date(),
+  deleteAt: z.date().nullish(),
 });
+
+export const userRequest = user.omit({
+  password: true,
+});
+
+export const allUserRequest = userRequest.array();
 
 export const createUserRequest = user.omit({
   id: true,
@@ -17,3 +23,5 @@ export const createUserRequest = user.omit({
   updateAt: true,
   deleteAt: true,
 });
+
+export const updateUserRequest = createUserRequest.deepPartial();

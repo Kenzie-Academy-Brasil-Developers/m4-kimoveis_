@@ -25,11 +25,11 @@ export default class User {
   password: string;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updateAt: Date;
 
   @DeleteDateColumn({ nullable: true })
-  deleteAt: Date;
+  deleteAt: Date | null | undefined;
 }
