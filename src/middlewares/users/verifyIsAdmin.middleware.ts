@@ -7,10 +7,14 @@ export const verifyIsAdmin = async (
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const token: string | undefined = req.headers.authorization!.split(' ')[1];
+  const token: string | undefined = req.headers.authorization;
+
+  // declarar em quais rotas iram passar por essa condição
+  if (token?.split(' ')[1] === undefined)
+    throw new AppError('Missing bearer token', 401);
 
   jwt.verify(
-    token!,
+    token.split(' ')[1],
     String(process.env.SECRET_KEY),
     (err: any, decode: any) => {
       if (err) throw new AppError(err.message, 401);

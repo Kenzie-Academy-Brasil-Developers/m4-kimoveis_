@@ -8,33 +8,33 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import Addresses from './addresses.entity';
-import Categories from './categories.entity';
+import { Address } from './addresses.entity';
+import { Category } from './categories.entity';
 
 @Entity('real_estate')
-export default class RealEstate {
+export class RealEstate {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'boolean', default: false })
   sold: boolean;
 
-  @Column({ default: 0 })
-  value: number;
+  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+  value: number | string;
 
   @Column({ type: 'integer' })
   size: number;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updateAt: Date;
+  updatedAt: Date;
 
-  @OneToOne(() => Addresses)
+  @OneToOne(() => Address)
   @JoinColumn()
-  address: Addresses;
+  address: Address;
 
-  @ManyToOne(() => Categories)
-  category: Categories;
+  @ManyToOne(() => Category)
+  category: Category;
 }

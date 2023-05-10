@@ -5,12 +5,12 @@ import {
 } from '../../interfaces/categories/categories.interface';
 import { Category } from '../../entities';
 import { AppDataSource } from '../../data-source';
-import { categotyRequest } from '../../schemas/categories.schema';
+import { categoryRequest } from '../../schemas/categories.schema';
 
 export const postCategoriesService = async (
   data: TCategoriesRequest
 ): Promise<TCategories> => {
-  categotyRequest.parse(data);
+  categoryRequest.parse(data);
 
   const repository: Repository<Category> =
     AppDataSource.getRepository(Category);

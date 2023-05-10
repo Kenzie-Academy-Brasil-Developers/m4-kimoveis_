@@ -5,6 +5,6 @@ export const category = z.object({
   name: z.string().max(45),
 });
 
-export const categotyRequest = category.omit({
+export const categoryRequest = category.omit({
   id: true,
 });

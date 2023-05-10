@@ -9,7 +9,7 @@ export const postRealEstateController = async (
   const { body } = req;
   const isAdmin: boolean = res.locals.isAdmin;
 
-  if (!isAdmin) throw new AppError('Insufficient permission', 401);
+  if (!isAdmin) throw new AppError('Insufficient permission', 403);
 
   const realEstate = await postRealEstateService(body);
 
