@@ -2,7 +2,6 @@ import { Repository } from 'typeorm';
 import { TRealEstateRequest } from '../../interfaces/realEstate/realEstate.interface';
 import { AppDataSource } from '../../data-source';
 import { Address, Category, RealEstate } from '../../entities';
-import { realEstateWithAddresResquestOmitId } from '../../schemas/realState.schema';
 import { TAddresResquest } from '../../interfaces/address/address.interface';
 import { TCategories } from '../../interfaces/categories/categories.interface';
 import { AppError } from '../../error';
@@ -10,8 +9,6 @@ import { AppError } from '../../error';
 export const postRealEstateService = async (
   dataRequest: TRealEstateRequest
 ): Promise<RealEstate> => {
-  realEstateWithAddresResquestOmitId.parse(dataRequest);
-
   // Category
 
   const repositoryCategory: Repository<Category> =
@@ -24,7 +21,7 @@ export const postRealEstateService = async (
 
   const category: TCategories | null = await repositoryCategory.findOne({
     where: {
-      name: categoryGetById!.name,
+      name: categoryGetById.name,
     },
   });
 
@@ -38,6 +35,7 @@ export const postRealEstateService = async (
   const findAddress: Address | null = await repositoryAddress.findOne({
     where: {
       number: dataRequest.address.number!,
+      zipCode: dataRequest.address.zipCode,
     },
   });
 
@@ -61,8 +59,6 @@ export const postRealEstateService = async (
     AppDataSource.getRepository(RealEstate);
 
   const data: RealEstate = repositoryrRealEstate.create(newDataRequest);
-
-  console.log(data);
 
   const dataResult: RealEstate = await repositoryrRealEstate.save(data);
 

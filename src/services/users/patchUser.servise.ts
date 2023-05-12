@@ -3,12 +3,16 @@ import { TUpdateUserRequest } from '../../interfaces/users/users.interface';
 import { User } from '../../entities';
 import { AppDataSource } from '../../data-source';
 import { updateUserRequest, userRequest } from '../../schemas/user.schema';
+import { AppError } from '../../error';
 
 export const patchUserService = async (
   updateData: TUpdateUserRequest,
-  id: number
+  id: number,
+  tokenId: number,
+  isAdmin: boolean
 ): Promise<any> => {
-  updateUserRequest.parse(updateData);
+  if (isAdmin === false && id !== tokenId)
+    throw new AppError('Insufficient permission', 403);
 
   const repository: Repository<User> = AppDataSource.getRepository(User);
 
@@ -17,12 +21,11 @@ export const patchUserService = async (
     .update(User)
     .set({
       ...updateData,
-      updateAt: new Date(),
     })
     .where('id = :id', { id })
     .execute();
 
-  const data: TUpdateUserRequest | null = await repository.findOneBy({ id });
+  const data: User | null = await repository.findOneBy({ id });
 
   return userRequest.parse(data);
 };

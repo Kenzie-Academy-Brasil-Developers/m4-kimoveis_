@@ -6,11 +6,12 @@ import {
   userRequest,
 } from '../../schemas/user.schema';
 import { DeepPartial } from 'typeorm';
+import { User } from '../../entities';
 
 export type TUser = z.infer<typeof user>;
 
-export type TUserRequest = z.infer<typeof userRequest>;
+export type TUserResponse = z.infer<typeof userRequest>;
 
 export type TCreateUserRequest = z.infer<typeof createUserRequest>;
 
-export type TUpdateUserRequest = DeepPartial<TCreateUserRequest>;
+export type TUpdateUserRequest = DeepPartial<User>;

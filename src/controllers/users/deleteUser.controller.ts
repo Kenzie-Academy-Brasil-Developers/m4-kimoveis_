@@ -7,11 +7,9 @@ export const deleteUserController = async (
   res: Response
 ): Promise<Response> => {
   const id: number = Number(req.params.id);
+  const isAdmin: boolean = res.locals.isAdmin;
 
-  if (res.locals.isAdmin === 'false')
-    throw new AppError('Insufficient permission', 401);
-
-  await deleteUserService(id);
+  await deleteUserService(id, isAdmin);
 
   return res.status(204).send();
 };

@@ -6,12 +6,11 @@ import {
 import { Category } from '../../entities';
 import { AppDataSource } from '../../data-source';
 import { categoryRequest } from '../../schemas/categories.schema';
+import { AppError } from '../../error';
 
 export const postCategoriesService = async (
   data: TCategoriesRequest
 ): Promise<TCategories> => {
-  categoryRequest.parse(data);
-
   const repository: Repository<Category> =
     AppDataSource.getRepository(Category);
 

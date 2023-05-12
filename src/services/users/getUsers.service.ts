@@ -1,13 +1,15 @@
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../data-source';
 import { User } from '../../entities';
-import { TUser, TUserRequest } from '../../interfaces/users/users.interface';
+import { TUserResponse } from '../../interfaces/users/users.interface';
 import { allUserRequest } from '../../schemas/user.schema';
 
-export const getUsersService = async (): Promise<TUserRequest[]> => {
+export const getUsersService = async (): Promise<TUserResponse[]> => {
   const repository: Repository<User> = AppDataSource.getRepository(User);
 
-  const users: TUser[] = await repository.find();
+  const users: User[] = await repository.find();
 
-  return allUserRequest.parse(users);
+  const userReturn: TUserResponse[] = allUserRequest.parse(users);
+
+  return userReturn;
 };

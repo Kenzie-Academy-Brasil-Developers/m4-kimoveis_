@@ -7,13 +7,18 @@ export const patchUserController = async (
   res: Response
 ): Promise<Response> => {
   const { body, params } = req;
-  const idToken = res.locals.idToken;
-  const isAdmin = res.locals.isAdmin;
+  const idToken: number = res.locals.idToken;
+  const isAdmin: boolean = res.locals.isAdmin;
 
-  if (isAdmin === 'false' && Number(idToken) !== Number(params.id))
-    throw new AppError('Insufficient permission', 401);
+  if (isAdmin === false && Number(idToken) !== Number(params.id))
+    throw new AppError('Insufficient permission', 403);
 
-  const updateUser = await patchUserService(body, Number(params.id));
+  const updateUser = await patchUserService(
+    body,
+    Number(params.id),
+    idToken,
+    isAdmin
+  );
 
   return res.status(200).json(updateUser);
 };

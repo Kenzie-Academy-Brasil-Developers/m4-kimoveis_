@@ -6,9 +6,9 @@ export const user = z.object({
   email: z.string().email().max(45),
   password: z.string().max(120),
   admin: z.boolean().default(false),
-  createdAt: z.date(),
-  updateAt: z.date(),
-  deleteAt: z.date().nullish(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  deletedAt: z.string().nullish(),
 });
 
 export const userRequest = user.omit({
@@ -20,8 +20,10 @@ export const allUserRequest = userRequest.array();
 export const createUserRequest = user.omit({
   id: true,
   createdAt: true,
-  updateAt: true,
-  deleteAt: true,
+  updatedAt: true,
+  deletedAt: true,
 });
 
-export const updateUserRequest = createUserRequest.deepPartial();
+export const updateUserRequest = createUserRequest.partial().omit({
+  admin: true,
+});

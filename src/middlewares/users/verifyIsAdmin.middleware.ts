@@ -9,7 +9,6 @@ export const verifyIsAdmin = async (
 ): Promise<Response | void> => {
   const token: string | undefined = req.headers.authorization;
 
-  // declarar em quais rotas iram passar por essa condição
   if (token?.split(' ')[1] === undefined)
     throw new AppError('Missing bearer token', 401);
 
@@ -20,7 +19,7 @@ export const verifyIsAdmin = async (
       if (err) throw new AppError(err.message, 401);
 
       res.locals.isAdmin = decode.admin;
-      res.locals.idToken = decode.sub;
+      res.locals.idToken = parseInt(decode.sub);
     }
   );
 

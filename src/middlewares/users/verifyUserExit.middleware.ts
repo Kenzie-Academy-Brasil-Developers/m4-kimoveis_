@@ -4,21 +4,18 @@ import { User } from '../../entities';
 import { AppDataSource } from '../../data-source';
 import { AppError } from '../../error';
 
-export const verifyEmailExits = async (
+export const verifyUserExist = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
+  const id: number = Number(req.params.id);
+
   const repository: Repository<User> = AppDataSource.getRepository(User);
-  const { email } = req.body;
 
-  const user: User | null = await repository.findOne({
-    where: {
-      email: email,
-    },
-  });
+  const user: User | null = await repository.findOneBy({ id });
 
-  if (user) throw new AppError(`Email already exists`, 409);
+  if (user === null) throw new AppError('User not found', 404);
 
   next();
 };

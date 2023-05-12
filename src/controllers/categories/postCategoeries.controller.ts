@@ -10,7 +10,7 @@ export const postCategoriesController = async (
   const { body } = req;
   const isAdmin: boolean = res.locals.isAdmin;
 
-  if (!isAdmin) throw new AppError('Insufficient permission', 401);
+  if (!isAdmin) throw new AppError('Insufficient permission', 403);
 
   const categories: TCategories = await postCategoriesService(body);
 

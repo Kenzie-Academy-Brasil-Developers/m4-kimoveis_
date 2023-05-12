@@ -13,15 +13,15 @@ export class Schedule {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @CreateDateColumn()
-  date: Date;
+  @Column({ type: 'date' })
+  date: Date | string;
 
-  @Column()
-  hour: Date;
+  @Column({ type: 'date' })
+  hour: Date | string;
 
-  @ManyToOne(() => RealEstate)
+  @ManyToOne(() => RealEstate, (realEstate) => realEstate)
   realEstate: RealEstate;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user)
   user: User;
 }

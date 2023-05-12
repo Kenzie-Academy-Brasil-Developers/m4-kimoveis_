@@ -6,8 +6,8 @@ export const realEstate = z.object({
   id: z.number(),
   value: z.number().or(z.string()),
   size: z.number().positive(),
-  createAt: z.date(),
-  updateAt: z.date(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
   address: address,
   category: category,
 });

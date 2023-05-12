@@ -1,11 +1,16 @@
+import { getRounds, hashSync } from 'bcryptjs';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Schedule } from './schedules.entity';
 
 @Entity('users')
 export class User {
@@ -24,12 +29,26 @@ export class User {
   @Column({ type: 'varchar', length: 120 })
   password: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @CreateDateColumn({ type: 'date' })
+  createdAt: Date | string;
 
-  @UpdateDateColumn()
-  updateAt: Date;
+  @UpdateDateColumn({ type: 'date' })
+  updatedAt: Date | string;
 
-  @DeleteDateColumn({ nullable: true })
-  deleteAt: Date | null | undefined;
+  @DeleteDateColumn({ type: 'date', nullable: true })
+  deletedAt: Date | string | null | undefined;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  hashPassword() {
+    // Função simples
+
+    // getRounds validando se a senha já não foi criptografada antes devido ao update
+    const isEncrypted: number = getRounds(this.password);
+
+    if (!isEncrypted) {
+      // Adicionando ao objeto que irá para o banco a senha criptografada
+      this.password = hashSync(this.password, 10);
+    }
+  }
 }

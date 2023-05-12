@@ -21,7 +21,7 @@ export const verifyNamaCategoryExistMiddleware = async (
     },
   });
 
-  if (categories) throw new AppError(`Category already registered`, 409);
+  if (categories) throw new AppError(`Category already exists`, 409);
 
   next();
 };
